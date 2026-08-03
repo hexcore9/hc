@@ -254,3 +254,13 @@
   function copyKey() {
     const keyText = document.getElementById("finalKey").innerText;
     navigator.clipboard.writeText(keyText).then(() => {
+      const btn = document.getElementById("copyBtn");
+      btn.innerText = "Copied ✓";
+      setTimeout(() => {
+        btn.innerText = "Copy Key";
+      }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

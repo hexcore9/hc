@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get Premium Key</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     background: #f5f7fa;
@@ -57,8 +53,19 @@
   .subtitle {
     font-size: 14px;
     color: #777;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     line-height: 1.5;
+  }
+
+  .referrer-box {
+    background: #f0f0f0;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 20px;
+    word-break: break-all;
+    text-align: left;
   }
 
   .key-box {
@@ -102,7 +109,6 @@
 
   .btn-continue {
     background: linear-gradient(135deg, #111, #333);
-    margin-bottom: 15px;
   }
 
   .loading {
@@ -112,16 +118,11 @@
     font-size: 15px;
   }
 
-  .denied {
-    display: none;
-    background: #fff5f5;
-    border: 1px solid #ffc9c9;
-    color: #c92a2a;
-    padding: 16px;
-    border-radius: 14px;
-    font-size: 14px;
-    line-height: 1.5;
+  .message {
     margin-top: 15px;
+    font-size: 14px;
+    color: #c92a2a;
+    display: none;
   }
 
   .footer {
@@ -138,7 +139,11 @@
   <h1>Premium Key</h1>
   <p class="subtitle">Key পেতে নিচের বাটনে ক্লিক করে Ad complete করুন</p>
 
-  <!-- Continue বাটন -->
+  <!-- Referrer দেখাবে -->
+  <div class="referrer-box" id="referrerBox">
+    Referrer: লোড হচ্ছে...
+  </div>
+
   <button class="btn btn-continue" id="continueBtn" onclick="goToShortener()">
     Continue to Unlock Key
   </button>
@@ -152,33 +157,46 @@
 
   <button class="btn" id="copyBtn" style="display:none;" onclick="copyKey()">Copy Key</button>
 
-  <div class="denied" id="denied">
-    সরাসরি অ্যাক্সেস নিষিদ্ধ।<br>
-    অনুগ্রহ করে উপরের বাটন ব্যবহার করুন।
-  </div>
+  <div class="message" id="message"></div>
 
   <div class="footer">Secure Key System</div>
 </div>
 
 <script>
   // ★★★ এখানে আপনার key.py এর API লিংক বসাবেন ★★★
-  const API = "http://192.168.1.105:5000";
+  const API = "http://YOUR-SERVER-IP:5000";
 
-  // ★★★ এখানে আপনার urlking Shortener লিংক বসাবেন ★★★
-  const SHORTENER_LINK = "https://urlking.in/cc1fa1";
+  // ★★★ এখানে আপনার Shortener লিংক বসাবেন ★★★
+  const SHORTENER_LINK = "https://urlking.site/your-actual-link";
 
   window.onload = function () {
-    const referrer = document.referrer.toLowerCase();
+    const referrer = document.referrer || "কোনো Referrer পাওয়া যায়নি (খালি)";
+    
+    // Referrer দেখাবে
+    document.getElementById("referrerBox").innerText = "Referrer: " + referrer;
 
-    // urlking.site থেকে এলে Key দিবে
-    if (referrer.includes("urlking.site")) {
+    const ref = referrer.toLowerCase();
+
+    // urlking.site বা lootdest.org থেকে এলে
+    if (ref.includes("urlking.site") || ref.includes("lootdest.org")) {
+
+      // একদিনে একবারের বেশি Key জেনারেট না করার চেক
+      const today = new Date().toDateString();
+      const lastGenerated = localStorage.getItem("lastKeyDate");
+
+      if (lastGenerated === today) {
+        document.getElementById("continueBtn").style.display = "none";
+        document.getElementById("message").style.display = "block";
+        document.getElementById("message").innerText = "আজকে ইতিমধ্যে Key নেওয়া হয়েছে। আগামীকাল আবার চেষ্টা করুন।";
+        return;
+      }
+
       document.getElementById("continueBtn").style.display = "none";
       generateKey();
     }
   };
 
   function goToShortener() {
-    // urlking লিংক ওপেন করবে
     window.location.href = SHORTENER_LINK;
   }
 
@@ -200,7 +218,6 @@
                        String(now.getMinutes()).padStart(2, "0") + ":" +
                        String(now.getSeconds()).padStart(2, "0");
 
-    // নতুন Key
     const newKey = "KEY-" + Math.random().toString(36).substring(2, 12).toUpperCase();
 
     try {
@@ -217,6 +234,9 @@
       loading.style.display = "none";
 
       if (data.status) {
+        // আজকের তারিখ সেভ করে রাখে যাতে আর Key না নেয়
+        localStorage.setItem("lastKeyDate", new Date().toDateString());
+
         finalKey.innerText = newKey;
         keyBox.style.display = "block";
         copyBtn.style.display = "block";
@@ -234,13 +254,3 @@
   function copyKey() {
     const keyText = document.getElementById("finalKey").innerText;
     navigator.clipboard.writeText(keyText).then(() => {
-      const btn = document.getElementById("copyBtn");
-      btn.innerText = "Copied ✓";
-      setTimeout(() => {
-        btn.innerText = "Copy Key";
-      }, 2000);
-    });
-  }
-</script>
-</body>
-</html>

@@ -3,115 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get Your Premium Key</title>
+<title>Get Premium Key</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
   body {
-    background: #0f0f13;
-    color: #fff;
-    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    font-family: 'Segoe UI', system-ui, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 20px;
+    color: #1a1a1a;
   }
+
   .card {
-    background: #1a1a24;
-    padding: 40px 30px;
-    border-radius: 20px;
-    width: 90%;
+    background: #ffffff;
+    width: 100%;
     max-width: 420px;
+    border-radius: 24px;
+    padding: 40px 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
     text-align: center;
-    box-shadow: 0 0 40px rgba(0, 255, 150, 0.15);
+    border: 1px solid #eee;
   }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #111, #333);
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+
   h1 {
-    margin-bottom: 18px;
-    color: #00ff99;
-    font-size: 26px;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #111;
   }
-  p {
-    margin-bottom: 25px;
-    line-height: 1.6;
-    color: #bbb;
-    font-size: 15px;
-  }
-  .btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #00ff99, #00cc77);
-    color: #000;
-    padding: 15px 32px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    margin: 10px 0;
-    transition: 0.3s;
-  }
-  .btn:hover {
-    transform: scale(1.05);
-  }
-  #keyBox {
-    display: none;
-    margin-top: 28px;
-    background: #111;
-    padding: 18px;
-    border-radius: 14px;
-    font-size: 20px;
-    letter-spacing: 1.5px;
-    color: #00ff99;
-    word-break: break-all;
-    font-weight: bold;
-  }
-  .expire {
-    margin-top: 12px;
+
+  .subtitle {
     font-size: 14px;
-    color: #aaa;
-  }
-  .note {
-    font-size: 13px;
     color: #777;
-    margin-top: 22px;
+    margin-bottom: 30px;
+    line-height: 1.5;
   }
+
+  .key-box {
+    background: #f8f9fc;
+    border: 1px dashed #ccc;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 25px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+    letter-spacing: 1px;
+    word-break: break-all;
+    display: none;
+  }
+
+  .expire {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #888;
+    font-weight: normal;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 16px;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+  }
+
+  .btn:hover {
+    background: #333;
+    transform: translateY(-2px);
+  }
+
+  .btn-continue {
+    background: linear-gradient(135deg, #111, #333);
+    margin-bottom: 15px;
+  }
+
   .loading {
     display: none;
-    margin-top: 20px;
-    color: #00ff99;
+    margin: 20px 0;
+    color: #555;
+    font-size: 15px;
+  }
+
+  .denied {
+    display: none;
+    background: #fff5f5;
+    border: 1px solid #ffc9c9;
+    color: #c92a2a;
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 15px;
+  }
+
+  .footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #aaa;
   }
 </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🔑 Get Premium Key</h1>
-    <p>
-      Key পেতে নিচের বাটনে ক্লিক করে Shortener লিংক complete করুন।<br>
-      অন্য কোনো উপায়ে (refresh, back, link search) Key পাওয়া যাবে না।
-    </p>
 
-    <!-- ★★★ এখানে আপনার Shortener লিংক দিন ★★★ -->
-    <a href="https://urlking.in/cc1fa1" class="btn" id="getKeyBtn">
-      Complete Ad & Get Key
-    </a>
+<div class="card">
+  <div class="logo">🔑</div>
+  <h1>Premium Key</h1>
+  <p class="subtitle">Key পেতে নিচের বাটনে ক্লিক করে Ad complete করুন</p>
 
-    <div class="loading" id="loading">Key তৈরি হচ্ছে...</div>
-    <div id="keyBox"></div>
-    <p class="note">⚠ শুধুমাত্র Shortener complete করার পরই Key পাবেন</p>
+  <!-- Continue বাটন -->
+  <button class="btn btn-continue" id="continueBtn" onclick="goToShortener()">
+    Continue to Unlock Key
+  </button>
+
+  <div class="loading" id="loading">Key তৈরি হচ্ছে...</div>
+
+  <div class="key-box" id="keyBox">
+    <span id="finalKey"></span>
+    <div class="expire">মেয়াদ: ১ দিন</div>
   </div>
+
+  <button class="btn" id="copyBtn" style="display:none;" onclick="copyKey()">Copy Key</button>
+
+  <div class="denied" id="denied">
+    সরাসরি অ্যাক্সেস নিষিদ্ধ।<br>
+    অনুগ্রহ করে উপরের বাটন ব্যবহার করুন।
+  </div>
+
+  <div class="footer">Secure Key System</div>
+</div>
 
 <script>
   // ★★★ এখানে আপনার key.py এর API লিংক বসাবেন ★★★
-  const API = "http://192.168.1.105:5000";   // উদাহরণ: "http://192.168.1.10:5000"
+  const API = "http://192.168.1.105:5000";
 
-  // Shortener থেকে আসার পর চেক
-  const urlParams = new URLSearchParams(window.location.search);
-  const fromShortener = urlParams.get("from") === "shortener" && urlParams.get("token") === "ABC123XYZ";
+  // ★★★ এখানে আপনার urlking Shortener লিংক বসাবেন ★★★
+  const SHORTENER_LINK = "https://urlking.in/cc1fa1";
 
-  if (fromShortener) {
-    document.getElementById("getKeyBtn").style.display = "none";
-    document.getElementById("loading").style.display = "block";
+  window.onload = function () {
+    const referrer = document.referrer.toLowerCase();
 
-    // ১ দিনের মেয়াদ হিসাব
+    // urlking.site থেকে এলে Key দিবে
+    if (referrer.includes("urlking.site")) {
+      document.getElementById("continueBtn").style.display = "none";
+      generateKey();
+    }
+  };
+
+  function goToShortener() {
+    // urlking লিংক ওপেন করবে
+    window.location.href = SHORTENER_LINK;
+  }
+
+  async function generateKey() {
+    const loading = document.getElementById("loading");
+    const keyBox = document.getElementById("keyBox");
+    const finalKey = document.getElementById("finalKey");
+    const copyBtn = document.getElementById("copyBtn");
+
+    loading.style.display = "block";
+
+    // ১ দিনের মেয়াদ
     const now = new Date();
-    now.setDate(now.getDate() + 1); // +1 day
+    now.setDate(now.getDate() + 1);
     const expireDate = now.getFullYear() + "-" +
                        String(now.getMonth() + 1).padStart(2, "0") + "-" +
                        String(now.getDate()).padStart(2, "0") + " " +
@@ -119,39 +200,46 @@
                        String(now.getMinutes()).padStart(2, "0") + ":" +
                        String(now.getSeconds()).padStart(2, "0");
 
-    // নতুন Key তৈরি
+    // নতুন Key
     const newKey = "KEY-" + Math.random().toString(36).substring(2, 12).toUpperCase();
 
-    // অটোমেটিক key.py তে রেজিস্টার
-    fetch(`${API}/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        key: newKey,
-        expire: expireDate
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("loading").style.display = "none";
+    try {
+      const res = await fetch(`${API}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: newKey,
+          expire: expireDate
+        })
+      });
+
+      const data = await res.json();
+      loading.style.display = "none";
 
       if (data.status) {
-        const box = document.getElementById("keyBox");
-        box.style.display = "block";
-        box.innerHTML = newKey + `<div class="expire">মেয়াদ: ১ দিন (আগামীকাল পর্যন্ত)</div>`;
+        finalKey.innerText = newKey;
+        keyBox.style.display = "block";
+        copyBtn.style.display = "block";
       } else {
-        document.getElementById("keyBox").style.display = "block";
-        document.getElementById("keyBox").innerHTML = "❌ Key তৈরি ব্যর্থ হয়েছে";
+        finalKey.innerText = "Key তৈরি ব্যর্থ হয়েছে";
+        keyBox.style.display = "block";
       }
-    })
-    .catch(err => {
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("keyBox").style.display = "block";
-      document.getElementById("keyBox").innerHTML = "❌ Server-এ কানেক্ট করা যাচ্ছে না";
-    });
+    } catch (err) {
+      loading.style.display = "none";
+      finalKey.innerText = "Server কানেক্ট হয়নি";
+      keyBox.style.display = "block";
+    }
+  }
 
-  } else {
-    // সরাসরি আসলে বা refresh করলে কিছুই দেখাবে না
+  function copyKey() {
+    const keyText = document.getElementById("finalKey").innerText;
+    navigator.clipboard.writeText(keyText).then(() => {
+      const btn = document.getElementById("copyBtn");
+      btn.innerText = "Copied ✓";
+      setTimeout(() => {
+        btn.innerText = "Copy Key";
+      }, 2000);
+    });
   }
 </script>
 </body>

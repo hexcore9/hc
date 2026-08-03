@@ -3,155 +3,152 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get Your Premium Key</title>
+<title>Key Admin Panel</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: #0f0f13;
     color: #fff;
     font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    padding: 40px 20px;
   }
-  .card {
+  .box {
     background: #1a1a24;
-    padding: 40px 30px;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 420px;
-    text-align: center;
-    box-shadow: 0 0 40px rgba(0, 255, 150, 0.15);
+    padding: 35px;
+    border-radius: 18px;
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(0, 255, 150, 0.12);
   }
-  h1 {
-    margin-bottom: 18px;
+  h2 {
     color: #00ff99;
-    font-size: 26px;
-  }
-  p {
     margin-bottom: 25px;
-    line-height: 1.6;
-    color: #bbb;
+    text-align: center;
+  }
+  h3 {
+    margin: 25px 0 12px;
+    color: #ccc;
+    font-size: 16px;
+  }
+  input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #111;
+    color: #fff;
     font-size: 15px;
   }
-  .btn {
-    display: inline-block;
+  button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
     background: linear-gradient(135deg, #00ff99, #00cc77);
     color: #000;
-    padding: 15px 32px;
-    border-radius: 50px;
-    text-decoration: none;
     font-weight: bold;
     font-size: 16px;
-    margin: 10px 0;
-    transition: 0.3s;
+    cursor: pointer;
+    transition: 0.25s;
   }
-  .btn:hover {
-    transform: scale(1.05);
+  button:hover {
+    transform: scale(1.03);
   }
-  #keyBox {
+  .msg {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
     display: none;
-    margin-top: 28px;
-    background: #111;
-    padding: 18px;
-    border-radius: 14px;
-    font-size: 20px;
-    letter-spacing: 1.5px;
-    color: #00ff99;
-    word-break: break-all;
-    font-weight: bold;
   }
-  .expire {
-    margin-top: 12px;
-    font-size: 14px;
-    color: #aaa;
-  }
-  .note {
-    font-size: 13px;
-    color: #777;
-    margin-top: 22px;
-  }
-  .loading {
-    display: none;
-    margin-top: 20px;
-    color: #00ff99;
-  }
+  .success { background: #003d2a; color: #00ff99; }
+  .error { background: #3d0000; color: #ff6b6b; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🔑 Get Premium Key</h1>
-    <p>
-      Key পেতে নিচের বাটনে ক্লিক করে Shortener লিংক complete করুন।<br>
-      অন্য কোনো উপায়ে (refresh, back, link search) Key পাওয়া যাবে না।
-    </p>
+  <div class="box">
+    <h2>🔑 Key Admin Panel</h2>
 
-    <!-- ★★★ এখানে আপনার Shortener লিংক দিন ★★★ -->
-    <a href="https://urlking.in/cc1fa1" class="btn" id="getKeyBtn">
-      Complete Ad & Get Key
-    </a>
+    <!-- ===================== Register ===================== -->
+    <h3>নতুন Key রেজিস্টার করুন</h3>
+    <input type="text" id="newKey" placeholder="Key লিখুন (যেমন: KEY-ABC123)">
+    <input type="text" id="expireDate" placeholder="Expire Date (YYYY-MM-DD HH:MM:SS) — খালি রাখলে Unlimited">
+    <button onclick="registerKey()">Register Key</button>
+    <div id="regMsg" class="msg"></div>
 
-    <div class="loading" id="loading">Key তৈরি হচ্ছে...</div>
-    <div id="keyBox"></div>
-    <p class="note">⚠ শুধুমাত্র Shortener complete করার পরই Key পাবেন</p>
+    <!-- ===================== Expire ===================== -->
+    <h3>Key Expire / Delete করুন</h3>
+    <input type="text" id="delKey" placeholder="যে Key মুছতে চান সেটা লিখুন">
+    <button onclick="expireKey()">Expire Key</button>
+    <div id="delMsg" class="msg"></div>
   </div>
 
 <script>
   // ★★★ এখানে আপনার key.py এর API লিংক বসাবেন ★★★
-  const API = "http://127.0.0.1:5000";   // উদাহরণ: "http://192.168.1.10:5000"
+  const API = "http://127.0.0.1:5000";   // উদাহরণ: "http://192.168.1.10:5000" বা "https://yourdomain.com"
 
-  // Shortener থেকে আসার পর চেক
-  const urlParams = new URLSearchParams(window.location.search);
-  const fromShortener = urlParams.get("from") === "shortener" && urlParams.get("token") === "asdfghjkl";
+  function showMsg(id, text, isSuccess) {
+    const el = document.getElementById(id);
+    el.style.display = "block";
+    el.className = "msg " + (isSuccess ? "success" : "error");
+    el.innerText = text;
+  }
 
-  if (fromShortener) {
-    document.getElementById("getKeyBtn").style.display = "none";
-    document.getElementById("loading").style.display = "block";
+  async function registerKey() {
+    const key = document.getElementById("newKey").value.trim();
+    const expire = document.getElementById("expireDate").value.trim();
 
-    // ১ দিনের মেয়াদ হিসাব
-    const now = new Date();
-    now.setDate(now.getDate() + 1); // +1 day
-    const expireDate = now.getFullYear() + "-" +
-                       String(now.getMonth() + 1).padStart(2, "0") + "-" +
-                       String(now.getDate()).padStart(2, "0") + " " +
-                       String(now.getHours()).padStart(2, "0") + ":" +
-                       String(now.getMinutes()).padStart(2, "0") + ":" +
-                       String(now.getSeconds()).padStart(2, "0");
+    if (!key) {
+      showMsg("regMsg", "Key লিখুন!", false);
+      return;
+    }
 
-    // নতুন Key তৈরি
-    const newKey = "KEY-" + Math.random().toString(36).substring(2, 12).toUpperCase();
-
-    // অটোমেটিক key.py তে রেজিস্টার
-    fetch(`${API}/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        key: newKey,
-        expire: expireDate
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("loading").style.display = "none";
+    try {
+      const res = await fetch(`${API}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: key, expire: expire })
+      });
+      const data = await res.json();
 
       if (data.status) {
-        const box = document.getElementById("keyBox");
-        box.style.display = "block";
-        box.innerHTML = newKey + `<div class="expire">মেয়াদ: ১ দিন (আগামীকাল পর্যন্ত)</div>`;
+        showMsg("regMsg", "✅ " + data.message, true);
+        document.getElementById("newKey").value = "";
+        document.getElementById("expireDate").value = "";
       } else {
-        document.getElementById("keyBox").style.display = "block";
-        document.getElementById("keyBox").innerHTML = "❌ Key তৈরি ব্যর্থ হয়েছে";
+        showMsg("regMsg", "❌ " + data.message, false);
       }
-    })
-    .catch(err => {
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("keyBox").style.display = "block";
-      document.getElementById("keyBox").innerHTML = "❌ Server-এ কানেক্ট করা যাচ্ছে না";
-    });
+    } catch (err) {
+      showMsg("regMsg", "❌ Server-এ কানেক্ট করা যাচ্ছে না। API লিংক চেক করুন।", false);
+    }
+  }
 
-  } else {
-    // সরাসরি আসলে বা refresh করলে কিছুই দেখাবে না
+  async function expireKey() {
+    const key = document.getElementById("delKey").value.trim();
+
+    if (!key) {
+      showMsg("delMsg", "Key লিখুন!", false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/expire`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: key })
+      });
+      const data = await res.json();
+
+      if (data.status) {
+        showMsg("delMsg", "✅ " + data.message, true);
+        document.getElementById("delKey").value = "";
+      } else {
+        showMsg("delMsg", "❌ " + data.message, false);
+      }
+    } catch (err) {
+      showMsg("delMsg", "❌ Server-এ কানেক্ট করা যাচ্ছে না। API লিংক চেক করুন।", false);
+    }
   }
 </script>
 </body>

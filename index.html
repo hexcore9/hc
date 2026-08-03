@@ -5,130 +5,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Get Premium Key</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
   body {
-    background: #f5f7fa;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    font-family: 'Inter', system-ui, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    color: #1a1a1a;
+    color: #0f172a;
   }
 
   .card {
     background: #ffffff;
     width: 100%;
     max-width: 420px;
-    border-radius: 24px;
+    border-radius: 28px;
     padding: 40px 32px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
     text-align: center;
-    border: 1px solid #eee;
+    border: 1px solid #f1f5f9;
   }
 
   .logo {
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(135deg, #111, #333);
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #0f172a, #334155);
     color: white;
-    font-size: 28px;
-    font-weight: bold;
-    border-radius: 50%;
+    font-size: 30px;
+    border-radius: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0 auto 24px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     margin-bottom: 8px;
-    color: #111;
+    color: #0f172a;
   }
 
   .subtitle {
     font-size: 14px;
-    color: #777;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .referrer-box {
-    background: #f0f0f0;
-    border-radius: 12px;
-    padding: 12px;
-    font-size: 13px;
-    color: #555;
-    margin-bottom: 20px;
-    word-break: break-all;
-    text-align: left;
+    color: #64748b;
+    margin-bottom: 32px;
+    line-height: 1.6;
   }
 
   .key-box {
-    background: #f8f9fc;
-    border: 1px dashed #ccc;
-    border-radius: 16px;
-    padding: 20px;
-    margin: 25px 0;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 18px;
+    padding: 22px;
+    margin: 28px 0 20px;
     font-size: 18px;
     font-weight: 600;
-    color: #111;
+    color: #0f172a;
     letter-spacing: 1px;
     word-break: break-all;
     display: none;
   }
 
   .expire {
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 13px;
-    color: #888;
-    font-weight: normal;
+    color: #94a3b8;
+    font-weight: 500;
   }
 
   .btn {
     width: 100%;
-    padding: 16px;
-    background: #111;
+    padding: 17px;
+    background: #0f172a;
     color: white;
     border: none;
-    border-radius: 14px;
+    border-radius: 16px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.25s;
+    transition: all 0.25s ease;
   }
 
   .btn:hover {
-    background: #333;
+    background: #1e293b;
     transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
   }
 
   .btn-continue {
-    background: linear-gradient(135deg, #111, #333);
+    background: linear-gradient(135deg, #0f172a, #334155);
   }
 
   .loading {
     display: none;
-    margin: 20px 0;
-    color: #555;
+    margin: 24px 0;
+    color: #64748b;
     font-size: 15px;
   }
 
   .message {
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 14px;
-    color: #c92a2a;
+    color: #dc2626;
     display: none;
+    line-height: 1.5;
   }
 
   .footer {
-    margin-top: 30px;
+    margin-top: 32px;
     font-size: 12px;
-    color: #aaa;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
   }
 </style>
 </head>
@@ -138,11 +136,6 @@
   <div class="logo">🔑</div>
   <h1>Premium Key</h1>
   <p class="subtitle">Key পেতে নিচের বাটনে ক্লিক করে Ad complete করুন</p>
-
-  <!-- Referrer দেখাবে -->
-  <div class="referrer-box" id="referrerBox">
-    Referrer: লোড হচ্ছে...
-  </div>
 
   <button class="btn btn-continue" id="continueBtn" onclick="goToShortener()">
     Continue to Unlock Key
@@ -155,7 +148,9 @@
     <div class="expire">মেয়াদ: ১ দিন</div>
   </div>
 
-  <button class="btn" id="copyBtn" style="display:none;" onclick="copyKey()">Copy Key</button>
+  <button class="btn" id="copyBtn" style="display:none;" onclick="copyKey()">
+    Copy Key
+  </button>
 
   <div class="message" id="message"></div>
 
@@ -170,24 +165,19 @@
   const SHORTENER_LINK = "https://urlking.in/cc1fa1";
 
   window.onload = function () {
-    const referrer = document.referrer || "কোনো Referrer পাওয়া যায়নি (খালি)";
-    
-    // Referrer দেখাবে
-    document.getElementById("referrerBox").innerText = "Referrer: " + referrer;
+    const referrer = document.referrer.toLowerCase();
 
-    const ref = referrer.toLowerCase();
+    // ★ সিকিউরিটি: শুধুমাত্র get.urlking.in থেকে এলেই Key দিবে
+    if (referrer.includes("get.urlking.in")) {
 
-    // urlking.site বা lootdest.org থেকে এলে
-    if (ref.includes("urlking.site") || ref.includes("lootdest.org")) {
-
-      // একদিনে একবারের বেশি Key জেনারেট না করার চেক
+      // একদিনে একবারের বেশি Key জেনারেট বন্ধ
       const today = new Date().toDateString();
       const lastGenerated = localStorage.getItem("lastKeyDate");
 
       if (lastGenerated === today) {
         document.getElementById("continueBtn").style.display = "none";
         document.getElementById("message").style.display = "block";
-        document.getElementById("message").innerText = "আজকে ইতিমধ্যে Key নেওয়া হয়েছে। আগামীকাল আবার চেষ্টা করুন।";
+        document.getElementById("message").innerText = "আজকে ইতিমধ্যে Key নেওয়া হয়েছে।\nআগামীকাল আবার চেষ্টা করুন।";
         return;
       }
 
@@ -234,7 +224,6 @@
       loading.style.display = "none";
 
       if (data.status) {
-        // আজকের তারিখ সেভ করে রাখে যাতে আর Key না নেয়
         localStorage.setItem("lastKeyDate", new Date().toDateString());
 
         finalKey.innerText = newKey;

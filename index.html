@@ -88,7 +88,7 @@
     </p>
 
     <!-- ★★★ এখানে আপনার Shortener লিংক দিন ★★★ -->
-    <a href="https://your-shortener-link.com/xxxx" class="btn" id="getKeyBtn">
+    <a href="https://urlking.in/cc1fa1" class="btn" id="getKeyBtn">
       Complete Ad & Get Key
     </a>
 
@@ -99,11 +99,11 @@
 
 <script>
   // ★★★ এখানে আপনার key.py এর API লিংক বসাবেন ★★★
-  const API = "http://127.0.0.1:5000";   // উদাহরণ: "http://192.168.1.10:5000"
+  const API = "http://192.168.1.105:5000";   // উদাহরণ: "http://192.168.1.10:5000"
 
   // Shortener থেকে আসার পর চেক
   const urlParams = new URLSearchParams(window.location.search);
-  const fromShortener = urlParams.get("from") === "shortener" && urlParams.get("token") === "YOUR_SECRET_TOKEN";
+  const fromShortener = urlParams.get("from") === "shortener" && urlParams.get("token") === "ABC123XYZ";
 
   if (fromShortener) {
     document.getElementById("getKeyBtn").style.display = "none";
